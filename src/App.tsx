@@ -1,6 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Item } from "./Item";
 import { EditableText } from "./EditableText";
 
@@ -30,13 +29,13 @@ function App() {
 
         <Grid container justifyContent="center" columnSpacing={8}>
           <Grid item xs={4}>
-            <Item Icon={AddCircleIcon} text="Insert text here" additionalText="Add here your additional text"/>
+            <Item icon="add_circle" text="Insert text here" additionalText="Add here your additional text"/>
           </Grid>
           <Grid item xs={4}>
-            <Item Icon={AddCircleIcon} text="Insert text here" additionalText="Add here your additional text"/>
+            <Item icon="add_circle" text="Insert text here" additionalText="Add here your additional text"/>
           </Grid>
           <Grid item xs={4}>
-            <Item Icon={AddCircleIcon} text="Insert text here" additionalText="Add here your additional text"/>
+            <Item icon="add_circle" text="Insert text here" additionalText="Add here your additional text"/>
           </Grid>
         </Grid>
       </Layout>
