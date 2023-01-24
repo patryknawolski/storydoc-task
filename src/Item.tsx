@@ -14,13 +14,13 @@ import { EditableText } from "./EditableText";
 import { EditButton } from "./EditButton";
 import { listWithLabels } from "./mui-icons-list";
 
-export interface SimpleDialogProps {
+export interface EditIconDialogProps {
   open: boolean;
   onClose: (value: string) => void;
   onIconChangeClick: (value: string) => void;
 }
 
-export const SimpleDialog: React.FC<SimpleDialogProps> = ({
+export const EditIconDialog: React.FC<EditIconDialogProps> = ({
   onClose,
   open,
   onIconChangeClick
@@ -89,18 +89,15 @@ const IconButton = styled("div")({
   fontSize: 60,
 });
 
-const EditIcon = styled(ModeEditIcon)({
-  fontSize: 36,
-  cursor: "pointer",
-});
-
 export const Item: React.FC<{
   id: number;
   icon: string;
   text: string;
   additionalText: string;
   onIconChange: ({icon, id}: {icon: string; id: number}) => void;
-}> = ({ id, icon, text, additionalText, onIconChange }) => {
+  onTextEdit: ({text, id}: {text: string; id: number}) => void;
+  onAdditionalTextEdit: ({text, id}: {text: string; id: number}) => void;
+}> = ({ id, icon, text, additionalText, onIconChange, onTextEdit, onAdditionalTextEdit }) => {
   const [isEditIconModalOpen, setIsEditIconModalOpen] = useState(false);
 
   const handleIconClick = () => {
@@ -112,8 +109,16 @@ export const Item: React.FC<{
   };
 
   const handleEditIcon = (value: string) => {
-    onIconChange({ icon: value, id: id })
+    onIconChange({ icon: value, id })
     setIsEditIconModalOpen(false);
+  }
+
+  const handleTextEdit = (text: string) => {
+    onTextEdit({ text, id })
+  }
+
+  const handleAdditionalTextEdit = (text: string) => {
+    onAdditionalTextEdit({ text, id })
   }
 
   return (
@@ -125,26 +130,28 @@ export const Item: React.FC<{
           </IconButton>
         </EditButton>
       </IconWrapper>
-      <SimpleDialog
+      <EditIconDialog
         open={isEditIconModalOpen}
         onClose={handleEditIconModalClose}
         onIconChangeClick={value => handleEditIcon(value)}
       />
       <Box display="flex" justifyContent="center" mt={1}>
         <EditableText
-          initialText={text}
+          text={text}
           component="h4"
           variant="h6"
           align="center"
           fontWeight={500}
+          onEdit={handleTextEdit}
         />
       </Box>
       <Box display="flex" justifyContent="center" mt={1}>
         <EditableText
-          initialText={additionalText}
+          text={additionalText}
           component="p"
           align="center"
           fontWeight={500}
+          onEdit={handleAdditionalTextEdit}
         />
       </Box>
     </>
