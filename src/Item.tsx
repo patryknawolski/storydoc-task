@@ -132,7 +132,7 @@ export const Item: React.FC<{
       />
       <Box display="flex" justifyContent="center" mt={1}>
         <EditableText
-          text={text}
+          initialText={text}
           component="h4"
           variant="h6"
           align="center"
@@ -141,7 +141,7 @@ export const Item: React.FC<{
       </Box>
       <Box display="flex" justifyContent="center" mt={1}>
         <EditableText
-          text={additionalText}
+          initialText={additionalText}
           component="p"
           align="center"
           fontWeight={500}

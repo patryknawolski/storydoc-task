@@ -54,12 +54,12 @@ function App() {
     <Page>
       <Layout p={4}>
         <Box display="flex" justifyContent={"center"} mb={2}>
-          <EditableText text="Insert a title here" component="h1" variant="h4" align="center" fontWeight={700} />
+          <EditableText initialText="Insert a title here" component="h1" variant="h4" align="center" fontWeight={700} />
         </Box>
 
         <Grid container justifyContent="center" columnSpacing={8}>
           {items.map((item, index) => (
-            <Grid item xs={4}>
+            <Grid key={item.id} item xs={4}>
               <Item id={item.id} icon={item.icon} onIconChange={({icon, id }) => handleIconChange({icon, id})} text="Insert text here" additionalText="Add here your additional text"/>
             </Grid>
           ))}
