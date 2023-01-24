@@ -1,7 +1,8 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { Item } from "./Item";
 import { EditableText } from "./EditableText";
+import { useState } from "react";
 
 const Page = styled('main')({
   display: 'flex',
@@ -20,6 +21,35 @@ const Layout = styled(Box)({
 })
 
 function App() {
+  const [items, setItems] = useState<Array<{
+    id: number;
+    icon: string;
+  }>>([{
+    id: 1,
+    icon: 'add_circle'
+  }, {
+    id: 2,
+    icon: 'add_circle'
+  }, {
+    id: 3,
+    icon: 'add_circle'
+  }])
+
+  const handleIconChange = ({icon, id}: {icon: string; id: number}) => {
+    setItems(prevItems => {
+      const newItems = [...prevItems];
+
+      const itemToBeChanged = newItems.find(item => item.id === id)
+
+      if (!itemToBeChanged) return newItems
+
+      const indexOfItemToBeChanged = newItems.indexOf(itemToBeChanged)
+      newItems[indexOfItemToBeChanged] = { ...itemToBeChanged, icon }
+      
+      return newItems
+    })
+  }
+
   return (
     <Page>
       <Layout p={4}>
@@ -28,15 +58,11 @@ function App() {
         </Box>
 
         <Grid container justifyContent="center" columnSpacing={8}>
-          <Grid item xs={4}>
-            <Item icon="add_circle" text="Insert text here" additionalText="Add here your additional text"/>
-          </Grid>
-          <Grid item xs={4}>
-            <Item icon="add_circle" text="Insert text here" additionalText="Add here your additional text"/>
-          </Grid>
-          <Grid item xs={4}>
-            <Item icon="add_circle" text="Insert text here" additionalText="Add here your additional text"/>
-          </Grid>
+          {items.map((item, index) => (
+            <Grid item xs={4}>
+              <Item id={item.id} icon={item.icon} onIconChange={({icon, id }) => handleIconChange({icon, id})} text="Insert text here" additionalText="Add here your additional text"/>
+            </Grid>
+          ))}
         </Grid>
       </Layout>
     </Page>

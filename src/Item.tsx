@@ -17,10 +17,7 @@ import { listWithLabels } from "./mui-icons-list";
 export interface SimpleDialogProps {
   open: boolean;
   onClose: (value: string) => void;
-  onIconChangeClick: (value: {
-    label: string;
-    value: string;
-  }) => void;
+  onIconChangeClick: (value: string) => void;
 }
 
 export const SimpleDialog: React.FC<SimpleDialogProps> = ({
@@ -28,14 +25,14 @@ export const SimpleDialog: React.FC<SimpleDialogProps> = ({
   open,
   onIconChangeClick
 }) => {
-  const [value, setValue] = React.useState<{
+  const [icon, setIcon] = React.useState<{
     label: string;
     value: string;
   } | null>(null);
 
   const handleIconChangeClick = () => {
-    if (value === null) return
-    onIconChangeClick(value)
+    if (icon === null) return
+    onIconChangeClick(icon.value)
   }
 
   return (
@@ -48,12 +45,12 @@ export const SimpleDialog: React.FC<SimpleDialogProps> = ({
         <DialogTitle>Choose an icon</DialogTitle>
         <Box display="flex" alignItems="flex-end">
           <Autocomplete
-            value={value}
+            value={icon}
             onChange={(
               event,
-              newValue: { label: string; value: string } | null
+              icon: { label: string; value: string } | null
             ) => {
-              setValue(newValue);
+              setIcon(icon);
             }}
             disablePortal
             id="combo-box-icons"
@@ -70,7 +67,7 @@ export const SimpleDialog: React.FC<SimpleDialogProps> = ({
             renderInput={(params) => <TextField {...params} label="Icon" />}
           />
           <Box ml={2}>
-            <Button variant="contained" size="large" disabled={value === null} onClick={handleIconChangeClick}>
+            <Button variant="contained" size="large" disabled={icon === null} onClick={handleIconChangeClick}>
               Confirm
             </Button>
           </Box>
@@ -98,10 +95,12 @@ const EditIcon = styled(ModeEditIcon)({
 });
 
 export const Item: React.FC<{
+  id: number;
   icon: string;
   text: string;
   additionalText: string;
-}> = ({ icon, text, additionalText }) => {
+  onIconChange: ({icon, id}: {icon: string; id: number}) => void;
+}> = ({ id, icon, text, additionalText, onIconChange }) => {
   const [isEditIconModalOpen, setIsEditIconModalOpen] = useState(false);
 
   const handleIconClick = () => {
@@ -111,6 +110,11 @@ export const Item: React.FC<{
   const handleEditIconModalClose = () => {
     setIsEditIconModalOpen(false);
   };
+
+  const handleEditIcon = (value: string) => {
+    onIconChange({ icon: value, id: id })
+    setIsEditIconModalOpen(false);
+  }
 
   return (
     <>
@@ -124,7 +128,7 @@ export const Item: React.FC<{
       <SimpleDialog
         open={isEditIconModalOpen}
         onClose={handleEditIconModalClose}
-        onIconChangeClick={handleEditIconModalClose}
+        onIconChangeClick={value => handleEditIcon(value)}
       />
       <Box display="flex" justifyContent="center" mt={1}>
         <EditableText
